@@ -1,0 +1,22 @@
+{
+  "scratch": {
+    "sounds": [
+      {
+       "name": "templatemod:scratch",
+        "stream": true
+      }
+    ]
+  },
+  "meow": {
+    "subtitle": "templatemod.sound.meow",
+    "sounds": [
+      "templatemod:meow"
+    ]
+  },
+  "fail": {
+    "subtitle": "templatemod.sound.fail",
+    "sounds": [
+      "templatemod:fail"
+    ]
+  }
+}

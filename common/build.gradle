@@ -1,0 +1,34 @@
+architectury {
+    def platforms = rootProject
+            .subprojects
+            .findAll { it.hasProperty('loom.platform') }
+            .collect { it.property('loom.platform') as String }
+            .toSet()
+
+    println "Platforms: ${platforms.toListString()}"
+    common(platforms)
+}
+
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    // Remove the next line if you don't want to depend on the API
+
+    implementation 'com.electronwill.night-config:core:3.6.3'
+    implementation 'com.electronwill.night-config:toml:3.6.3'
+    compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+    compileOnly "org.spongepowered:mixin:${mixin_version}"
+}
+
+loom {
+    accessWidenerPath.set(file("src/main/resources/${mod_id}.accesswidener"))
+}
+
+idea.module {
+    excludeDirs += [
+            file('.gradle'),
+            file('build'),
+            file('run')
+    ]
+}

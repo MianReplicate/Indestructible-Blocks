@@ -1,0 +1,13 @@
+{
+  "block.templatemod.template_block": "Meowing Block",
+  "item.templatemod.template_item": "Meowing Disc",
+  "itemGroup.templatemod.template_mod": "Template Mod",
+  "jukebox_song.templatemod.template_jukebox_song": "Tanger - Scratch!",
+  "meow": "meow",
+  "meow.tooltip": "meow?",
+  "templatemod.configuration.General Settings": "General Settings",
+  "templatemod.configuration.General Settings.button": "Edit",
+  "templatemod.configuration.General Settings.tooltip": "This category holds general values that most people will want to change.",
+  "templatemod.sound.fail": "no meow :<",
+  "templatemod.sound.meow": "MEOW!!"
+}

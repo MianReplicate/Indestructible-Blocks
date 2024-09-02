@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "templatemod",
+  "version": "${mod_version}",
+  "icon": "${logo_file}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "MianReplicate"
+  ],
+  "contact": {
+    "repo": "${repository_url}",
+    "issues": "${issue_tracker_url}"
+  },
+  "license": "${mod_license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "${mod_base_package}.fabric.TemplateModFabric"
+    ],
+    "client": [
+      "${mod_base_package}.fabric.TemplateModFabricClient"
+    ]
+  },
+  "mixins": [
+    "${mod_id}-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric": ">=${fabric_api_version}",
+    "minecraft": ">=${minecraft_version}"
+  }
+}

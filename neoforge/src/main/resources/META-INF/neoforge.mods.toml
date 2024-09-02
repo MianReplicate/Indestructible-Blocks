@@ -1,0 +1,34 @@
+modLoader = "javafml" #mandatory
+loaderVersion = "${neo_loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "${issue_tracker_url}"
+
+[[mods]]
+modId = "templatemod"
+version = "${mod_version}"
+displayName = "${mod_name}"
+logoFile = "${logo_file}"
+credits="${mod_credits}"
+authors = "${mod_authors}"
+
+description = "${mod_description}"
+
+#Neoforge dependency
+[[dependencies.templatemod]]
+modId = "neoforge"
+type = 'required'
+versionRange = "${neo_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+#Minecraft dependency
+[[dependencies.templatemod]]
+modId = "minecraft"
+type = 'required'
+versionRange = "[${minecraft_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+#Mixins
+[[mixins]]
+config="${mod_id}-common.mixins.json"
