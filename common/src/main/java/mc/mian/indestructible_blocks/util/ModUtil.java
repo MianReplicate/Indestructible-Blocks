@@ -1,6 +1,8 @@
 package mc.mian.indestructible_blocks.util;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -32,6 +34,15 @@ public class ModUtil {
         return false;
     }
 
+    public static boolean playerTryToBreak(Player player, BlockState state){
+        if(player.isCreative() && ModUtil.isInConfig(state)){
+            ModUtil.forceDestructibility(state);
+        } else if(!player.isCreative()){
+            player.displayClientMessage(Component.translatable("gui.indestructible_blocks.cannot_break"), true);
+        }
+        return true;
+    }
+
     // Changes indestructibility state of a blockId
     public static IndestructibilityState setIndestructibilityState(String blockId, boolean indestructible){
         List<String> indestructible_blocks = (List<String>) IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.get();
@@ -58,6 +69,4 @@ public class ModUtil {
             IndestructibleBlocks.blocksToRemove.add(state);
         }
     }
-
-    public enum IndestructibilityState{INDESTRUCTIBLE, DESTRUCTIBLE}
 }

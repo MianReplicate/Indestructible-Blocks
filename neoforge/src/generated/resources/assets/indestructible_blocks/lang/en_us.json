@@ -1,11 +1,13 @@
 {
   "Indestructible Blocks": "Indestructible Blocks",
   "Indestructible Blocks.tooltip": "Put the namespace and id of any block here to make it invincible.",
+  "gui.indestructible_blocks.cannot_break": "This block is unbreakable",
   "gui.indestructible_blocks.failed_to_change_state": "Failed to change indestructibility state of %s",
-  "gui.indestructible_blocks.indestructibility_state": "New Indestructible State: %s",
+  "gui.indestructible_blocks.indestructibility_state": "Changed Indestructible State: %s",
+  "gui.indestructible_blocks.setting_state": "Changed Indestructibility Setting: %s",
   "indestructible_blocks.configuration.General Settings": "General Settings",
   "indestructible_blocks.configuration.General Settings.button": "Edit",
   "indestructible_blocks.configuration.General Settings.tooltip": "This category holds general values that most people will want to change.",
-  "item.indestructible_blocks.destructibility_editor": "Meowing Disc",
+  "item.indestructible_blocks.destructibility_editor": "Destructibility Editor",
   "itemGroup.indestructible_blocks.indestructible_blocks": "Indestructible Blocks"
 }
