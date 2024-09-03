@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "templatemod",
+  "id": "indestructible_blocks",
   "version": "${mod_version}",
   "icon": "${logo_file}",
   "name": "${mod_name}",
@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "${mod_base_package}.fabric.TemplateModFabric"
+      "${mod_base_package}.fabric.IndestructibleBlocksFabric"
     ],
     "client": [
-      "${mod_base_package}.fabric.TemplateModFabricClient"
+      "${mod_base_package}.fabric.IndestructibleBlocksClient"
     ]
   },
   "mixins": [

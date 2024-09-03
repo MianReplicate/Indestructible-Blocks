@@ -4,7 +4,7 @@ license = "${mod_license}"
 issueTrackerURL = "${issue_tracker_url}"
 
 [[mods]]
-modId = "templatemod"
+modId = "indestructible_blocks"
 version = "${mod_version}"
 displayName = "${mod_name}"
 logoFile = "${logo_file}"
@@ -14,7 +14,7 @@ authors = "${mod_authors}"
 description = "${mod_description}"
 
 #Neoforge dependency
-[[dependencies.templatemod]]
+[[dependencies.indestructible_blocks]]
 modId = "neoforge"
 type = 'required'
 versionRange = "${neo_version_range}"
@@ -22,7 +22,7 @@ ordering = "NONE"
 side = "BOTH"
 
 #Minecraft dependency
-[[dependencies.templatemod]]
+[[dependencies.indestructible_blocks]]
 modId = "minecraft"
 type = 'required'
 versionRange = "[${minecraft_version},)"
