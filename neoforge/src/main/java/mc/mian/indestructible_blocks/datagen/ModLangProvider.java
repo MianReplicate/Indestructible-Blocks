@@ -35,8 +35,11 @@ public class ModLangProvider extends LanguageProvider {
     protected void addTranslations() {
         addConfigOption("Indestructible Blocks", "Indestructible Blocks", "Put the namespace and id of any block here to make it invincible.");
         addConfigSection("General Settings", "General Settings", "This category holds general values that most people will want to change.");
-        addGuiMessage("indestructibility_state", "Changed Indestructible State: %s");
-        addGuiMessage("failed_to_change_state", "Failed to change indestructibility state of %s");
+        addGuiMessage("indestructibility_state", "Changed \"%s\" Indestructible State: %s");
+        addGuiMessage("failed_to_change_state", "Failed to change indestructibility state of \"%s\"");
+        addGuiMessage("block_indestructibility_state", "Changed the selected block's Indestructible State: %s");
+        addGuiMessage("failed_to_change_block_state", "Failed to change indestructibility state of %s");
+
         addGuiMessage("cannot_break", "This block is unbreakable");
         addGuiMessage("setting_state", "Changed Indestructibility Setting: %s");
         addItem(ModItems.DESTRUCTIBILITY_EDITOR, "Destructibility Editor");

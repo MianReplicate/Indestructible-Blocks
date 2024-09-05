@@ -17,6 +17,6 @@ public class IndestructibleBlocksFabric implements ModInitializer {
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
 
-        PlayerBlockBreakEvents.BEFORE.register(((world, player, pos, state, blockEntity) -> ModUtil.playerTryToBreak(player, state)));
+        PlayerBlockBreakEvents.BEFORE.register(((world, player, pos, state, blockEntity) -> ModUtil.playerTryToBreak(player, state, pos)));
     }
 }

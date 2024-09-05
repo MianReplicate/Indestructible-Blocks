@@ -1,6 +1,7 @@
 package mc.mian.indestructible_blocks.mixin;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
+import mc.mian.indestructible_blocks.api.RandomTickScheduler;
 import mc.mian.indestructible_blocks.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -13,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
-
 @Mixin(LevelChunk.class)
 public class LevelChunkMixin {
 
@@ -25,10 +24,14 @@ public class LevelChunkMixin {
         if(!level.isClientSide){
             BlockState currentState = level.getBlockState(pos);
             if(newState.getBlock() != currentState.getBlock()){
-                if(ModUtil.isInConfig(currentState) && !ModUtil.isRequestedToBeForceRemoved(currentState)){
+                if(ModUtil.isInConfig(currentState) && !ModUtil.isPendingRemoval(currentState) && !ModUtil.isBlockPosRemovable(level.getChunk(pos), pos)){
                     cir.cancel();
                 } else {
-                    IndestructibleBlocks.blocksToRemove.remove(currentState);
+                    IndestructibleBlocks.pendingRemovalBlocks.remove(currentState);
+                    RandomTickScheduler randomTickScheduler = ((RandomTickScheduler) level.getChunk(pos));
+                    if(randomTickScheduler.hasRandomTick(pos)){
+                        randomTickScheduler.removeRandomTick(pos);
+                    }
                 }
             }
         }

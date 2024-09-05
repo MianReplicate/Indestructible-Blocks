@@ -7,6 +7,6 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 public class ModEvents {
     @SubscribeEvent
     public static void playerDestroyEvent(final BlockEvent.BreakEvent event){
-        ModUtil.playerTryToBreak(event.getPlayer(), event.getState());
+        ModUtil.playerTryToBreak(event.getPlayer(), event.getState(), event.getPos());
     }
 }
