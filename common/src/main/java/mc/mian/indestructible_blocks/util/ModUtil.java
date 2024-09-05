@@ -1,10 +1,9 @@
 package mc.mian.indestructible_blocks.util;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
-import mc.mian.indestructible_blocks.api.RandomTickScheduler;
+import mc.mian.indestructible_blocks.api.OverrideStateScheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -39,7 +38,7 @@ public class ModUtil {
     }
 
     public static boolean playerTryToBreak(Player player, BlockState state, BlockPos pos){
-        if(ModUtil.isInConfig(state) && !ModUtil.isBlockPosRemovable(player.level().getChunk(pos), pos)){
+        if(!ModUtil.isBlockPosRemovable(player.level().getChunk(pos), pos)){
             if(player.isCreative()){
                 ModUtil.addToPendingRemoval(state);
             } else if(!player.isCreative()){
@@ -50,18 +49,18 @@ public class ModUtil {
     }
 
     // Changes indestructibility state of a blockId
-    public static IndestructibilityState setIndestructibilityState(String blockId, boolean indestructible){
+    public static DestructibilityState setIndestructibilityState(String blockId, boolean indestructible){
         List<String> indestructible_blocks = (List<String>) IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.get();
         if(!isInConfig(blockId) && indestructible){
             indestructible_blocks.add(blockId);
             IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.set(indestructible_blocks);
             IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.save();
-            return IndestructibilityState.INDESTRUCTIBLE;
+            return DestructibilityState.INDESTRUCTIBLE;
         }else if(isInConfig(blockId) && !indestructible){
             indestructible_blocks.remove(blockId);
             IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.set(indestructible_blocks);
             IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.save();
-            return IndestructibilityState.DESTRUCTIBLE;
+            return DestructibilityState.DESTRUCTIBLE;
         }
         return null;
     }
@@ -75,28 +74,25 @@ public class ModUtil {
         }
     }
 
-    // When the block correlating to this pos is removed, this pos will also be removed.
-    public static IndestructibilityState setBlockPosRemovable(ChunkAccess chunk, BlockPos pos, boolean removable){
-        IndestructibilityState state = removable ? IndestructibilityState.DESTRUCTIBLE : IndestructibilityState.INDESTRUCTIBLE;
-        RandomTickScheduler randomTickScheduler = ((RandomTickScheduler) chunk);
-        if(state == IndestructibilityState.DESTRUCTIBLE){
-            if(isInConfig(chunk.getBlockState(pos))){
-                randomTickScheduler.scheduleRandomTick(pos);
-            } else {
-                randomTickScheduler.removeRandomTick(pos);
-            }
+    // Overrides the destructibility state of the block below regardless of configuration
+    public static DestructibilityState changeOverride(ChunkAccess chunk, BlockPos pos){
+        DestructibilityState state = ((OverrideStateScheduler) chunk).hasOverride(pos);
+        if(state == null){
+            state = isInConfig(chunk.getBlockState(pos)) ? DestructibilityState.DESTRUCTIBLE : DestructibilityState.INDESTRUCTIBLE;
         } else {
-            if(isInConfig(chunk.getBlockState(pos))){
-                randomTickScheduler.removeRandomTick(pos);
-            } else {
-                randomTickScheduler.scheduleRandomTick(pos);
-            }
+            state = state == DestructibilityState.DESTRUCTIBLE ? DestructibilityState.INDESTRUCTIBLE : DestructibilityState.DESTRUCTIBLE;
         }
+        ((OverrideStateScheduler) chunk).putOverride(pos, state);
         return state;
     }
 
     public static boolean isBlockPosRemovable(ChunkAccess chunk, BlockPos pos){
-        RandomTickScheduler randomTickScheduler = ((RandomTickScheduler) chunk);
-        return (isInConfig(chunk.getBlockState(pos)) && randomTickScheduler.hasRandomTick(pos)) || (!isInConfig(chunk.getBlockState(pos)) && !randomTickScheduler.hasRandomTick(pos));
+        OverrideStateScheduler overrideStateScheduler = ((OverrideStateScheduler) chunk);
+        DestructibilityState state = overrideStateScheduler.hasOverride(pos);
+        if(state == null){
+            return !isInConfig(chunk.getBlockState(pos));
+        } else {
+            return state != DestructibilityState.INDESTRUCTIBLE;
+        }
     }
 }
