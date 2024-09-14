@@ -1,7 +1,7 @@
 package mc.mian.indestructible_blocks.common.level;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
-import mc.mian.indestructible_blocks.api.OverrideStateScheduler;
+import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.ModResources;
 import net.minecraft.core.BlockPos;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class IndestructibleBlocksSavedData extends SavedData implements OverrideStateScheduler {
+public class IndestructibleBlocksSavedData extends SavedData implements OverrideState {
     private final HashMap<BlockPos, DestructibilityState> state_overrides = new HashMap<>();
 
     @Override
@@ -59,10 +59,8 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
                 compoundTag.put("block_pos", NbtUtils.writeBlockPos(blockPos));
                 compoundTag.putString("state", state.getSetting());
                 listTag.add(compoundTag);
-                IndestructibleBlocks.LOGGER.info("saving");
             });
             tag.put("state_overrides", listTag);
-            IndestructibleBlocks.LOGGER.info("put!");
         }
         return tag;
     }
@@ -71,12 +69,9 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
         IndestructibleBlocksSavedData data = create();
         if (tag.contains("state_overrides", Tag.TAG_LIST)) {
             for (Tag override : tag.getList("state_overrides", Tag.TAG_COMPOUND)) {
-                IndestructibleBlocks.LOGGER.info("grabbing override");
                 if(override instanceof CompoundTag overrideCompound){
-                    IndestructibleBlocks.LOGGER.info("found override tag");
                     IntArrayTag list = (IntArrayTag) overrideCompound.get("block_pos");
                     String setting = overrideCompound.getString("state");
-                    IndestructibleBlocks.LOGGER.info("putting "+list+" with "+setting);
                     data.putOverride(new BlockPos(list.get(0).getAsInt(), list.get(1).getAsInt(), list.get(2).getAsInt()), DestructibilityState.getEnum(setting));
                 }
             }

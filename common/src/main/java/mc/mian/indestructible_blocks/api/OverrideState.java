@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 
 import java.util.HashMap;
 
-public interface OverrideStateScheduler {
+public interface OverrideState {
     void putOverride(BlockPos pos, DestructibilityState setting);
     void removeOverride(BlockPos pos);
     DestructibilityState hasOverride(BlockPos pos);

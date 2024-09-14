@@ -1,14 +1,13 @@
 package mc.mian.indestructible_blocks.util;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
-import mc.mian.indestructible_blocks.api.OverrideStateScheduler;
+import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.common.level.IndestructibleBlocksSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.List;
 
@@ -68,8 +67,8 @@ public class ModUtil {
 
     // Overrides the destructibility state of the block below regardless of configuration
     public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos){
-        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
-        DestructibilityState state = overrideStateScheduler.hasOverride(pos);
+        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        DestructibilityState state = overrideState.hasOverride(pos);
         if(state == null){
             state = isInConfig(level.getBlockState(pos)) ? DestructibilityState.DESTRUCTIBLE : DestructibilityState.INDESTRUCTIBLE;
         } else {
@@ -79,14 +78,14 @@ public class ModUtil {
     }
 
     public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos, DestructibilityState state){
-        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
-        overrideStateScheduler.putOverride(pos, state);
+        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        overrideState.putOverride(pos, state);
         return state;
     }
 
     public static boolean isBlockPosRemovable(ServerLevel level, BlockPos pos){
-        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
-        DestructibilityState state = overrideStateScheduler.hasOverride(pos);
+        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        DestructibilityState state = overrideState.hasOverride(pos);
         if(state == null){
             return !isInConfig(level.getBlockState(pos));
         } else {
