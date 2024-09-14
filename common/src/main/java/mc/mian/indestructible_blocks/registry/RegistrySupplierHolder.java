@@ -41,7 +41,7 @@ public class RegistrySupplierHolder<R, T extends R> implements Holder<R>, Suppli
     public T value() {
         this.bind(true);
         if (this.holder == null) {
-            throw new NullPointerException("Trying to access unbound value: " + String.valueOf(this.key));
+            throw new NullPointerException("Trying to access unbound value: " + this.key);
         } else {
             return (T) this.holder.value();
         }
@@ -66,7 +66,7 @@ public class RegistrySupplierHolder<R, T extends R> implements Holder<R>, Suppli
                 this.holder = registry.getHolder(this.key).orElse(null);
             } else if (throwOnMissingRegistry) {
                 String var10002 = String.valueOf(this);
-                throw new IllegalStateException("Registry not present for " + var10002 + ": " + String.valueOf(this.key.registry()));
+                throw new IllegalStateException("Registry not present for " + var10002 + ": " + this.key.registry());
             }
 
         }

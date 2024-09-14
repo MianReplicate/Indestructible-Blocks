@@ -31,14 +31,19 @@ public class ModLangProvider extends LanguageProvider {
         add("itemGroup."+ModResources.MOD_ID+"."+title, translation);
     }
 
+    public void addChatMessage(String title, String translation){
+        add("chat."+ModResources.MOD_ID+"."+title, translation);
+    }
+
     @Override
     protected void addTranslations() {
         addConfigOption("Indestructible Blocks", "Indestructible Blocks", "Put the namespace and id of any block here to make it invincible.");
         addConfigSection("General Settings", "General Settings", "This category holds general values that most people will want to change.");
         addGuiMessage("indestructibility_state", "Changed \"%s\" Indestructible State: %s");
         addGuiMessage("failed_to_change_state", "Failed to change indestructibility state of \"%s\"");
-        addGuiMessage("block_indestructibility_state", "Changed the selected block's Indestructible State: %s");
+        addGuiMessage("block_indestructibility_state", "Changed State of Selected Block: %s");
         addGuiMessage("failed_to_change_block_state", "Failed to change indestructibility state of %s");
+        addChatMessage("set_multiple_block_state", "Successfully changed %s block(s)");
 
         addGuiMessage("cannot_break", "This block is unbreakable");
         addGuiMessage("setting_state", "Changed Indestructibility Setting: %s");

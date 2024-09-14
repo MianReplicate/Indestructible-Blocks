@@ -2,8 +2,10 @@ package mc.mian.indestructible_blocks.util;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.api.OverrideStateScheduler;
+import mc.mian.indestructible_blocks.common.level.IndestructibleBlocksSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -14,35 +16,25 @@ public class ModUtil {
 
     // Determines checks if block is in the force removal list
     public static boolean isPendingRemoval(BlockState state){
-        if(IndestructibleBlocks.pendingRemovalBlocks.stream().anyMatch(blockStateToRemove -> state == blockStateToRemove)){
-            return true;
-        }
-        return false;
+        return IndestructibleBlocks.pendingRemovalBlocks.stream().anyMatch(blockStateToRemove -> state == blockStateToRemove);
     }
 
     public static boolean isInConfig(BlockState state){
-        List<String> indestructible_blocks = (List<String>) IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.get();
-        String blockId = state.getBlockHolder().getRegisteredName();
-        if(indestructible_blocks.stream().anyMatch(blockIdBeingCompared -> blockIdBeingCompared.equals(blockId))){
-            return true;
-        }
-        return false;
+        return isInConfig(state.getBlockHolder().getRegisteredName());
     }
 
     public static boolean isInConfig(String blockId){
         List<String> indestructible_blocks = (List<String>) IndestructibleBlocks.config.INDESTRUCTIBLE_BLOCK_LIST.get();
-        if(indestructible_blocks.stream().anyMatch(blockIdBeingCompared -> blockIdBeingCompared.equals(blockId))){
-            return true;
-        }
-        return false;
+        return indestructible_blocks.stream().anyMatch(blockIdBeingCompared -> blockIdBeingCompared.equals(blockId));
     }
 
     public static boolean playerTryToBreak(Player player, BlockState state, BlockPos pos){
-        if(!ModUtil.isBlockPosRemovable(player.level().getChunk(pos), pos)){
+        if(!ModUtil.isBlockPosRemovable((ServerLevel) player.level(), pos)){
             if(player.isCreative()){
                 ModUtil.addToPendingRemoval(state);
             } else if(!player.isCreative()){
                 player.displayClientMessage(Component.translatable("gui.indestructible_blocks.cannot_break"), true);
+                return false;
             }
         }
         return true;
@@ -75,22 +67,28 @@ public class ModUtil {
     }
 
     // Overrides the destructibility state of the block below regardless of configuration
-    public static DestructibilityState changeOverride(ChunkAccess chunk, BlockPos pos){
-        DestructibilityState state = ((OverrideStateScheduler) chunk).hasOverride(pos);
+    public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos){
+        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        DestructibilityState state = overrideStateScheduler.hasOverride(pos);
         if(state == null){
-            state = isInConfig(chunk.getBlockState(pos)) ? DestructibilityState.DESTRUCTIBLE : DestructibilityState.INDESTRUCTIBLE;
+            state = isInConfig(level.getBlockState(pos)) ? DestructibilityState.DESTRUCTIBLE : DestructibilityState.INDESTRUCTIBLE;
         } else {
             state = state == DestructibilityState.DESTRUCTIBLE ? DestructibilityState.INDESTRUCTIBLE : DestructibilityState.DESTRUCTIBLE;
         }
-        ((OverrideStateScheduler) chunk).putOverride(pos, state);
+        return changeOverride(level, pos, state);
+    }
+
+    public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos, DestructibilityState state){
+        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        overrideStateScheduler.putOverride(pos, state);
         return state;
     }
 
-    public static boolean isBlockPosRemovable(ChunkAccess chunk, BlockPos pos){
-        OverrideStateScheduler overrideStateScheduler = ((OverrideStateScheduler) chunk);
+    public static boolean isBlockPosRemovable(ServerLevel level, BlockPos pos){
+        OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
         DestructibilityState state = overrideStateScheduler.hasOverride(pos);
         if(state == null){
-            return !isInConfig(chunk.getBlockState(pos));
+            return !isInConfig(level.getBlockState(pos));
         } else {
             return state != DestructibilityState.INDESTRUCTIBLE;
         }

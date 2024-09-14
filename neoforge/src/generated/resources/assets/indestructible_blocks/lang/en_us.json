@@ -1,7 +1,8 @@
 {
   "Indestructible Blocks": "Indestructible Blocks",
   "Indestructible Blocks.tooltip": "Put the namespace and id of any block here to make it invincible.",
-  "gui.indestructible_blocks.block_indestructibility_state": "Changed the selected block's Indestructible State: %s",
+  "chat.indestructible_blocks.set_multiple_block_state": "Successfully changed %s block(s)",
+  "gui.indestructible_blocks.block_indestructibility_state": "Changed State of Selected Block: %s",
   "gui.indestructible_blocks.cannot_break": "This block is unbreakable",
   "gui.indestructible_blocks.failed_to_change_block_state": "Failed to change indestructibility state of %s",
   "gui.indestructible_blocks.failed_to_change_state": "Failed to change indestructibility state of \"%s\"",

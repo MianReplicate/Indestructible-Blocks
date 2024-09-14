@@ -2,8 +2,10 @@ package mc.mian.indestructible_blocks.mixin;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.api.OverrideStateScheduler;
+import mc.mian.indestructible_blocks.common.level.IndestructibleBlocksSavedData;
 import mc.mian.indestructible_blocks.util.ModUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -24,11 +26,11 @@ public class LevelChunkMixin {
         if(!level.isClientSide){
             BlockState currentState = level.getBlockState(pos);
             if(newState.getBlock() != currentState.getBlock()){
-                if(!ModUtil.isPendingRemoval(currentState) && !ModUtil.isBlockPosRemovable(level.getChunk(pos), pos)){
+                if(!ModUtil.isPendingRemoval(currentState) && !ModUtil.isBlockPosRemovable((ServerLevel) level, pos)){
                     cir.cancel();
                 } else {
                     IndestructibleBlocks.pendingRemovalBlocks.remove(currentState);
-                    OverrideStateScheduler overrideStateScheduler = ((OverrideStateScheduler) level.getChunk(pos));
+                    OverrideStateScheduler overrideStateScheduler = IndestructibleBlocksSavedData.getOrCreate(((ServerLevel) level).getDataStorage());
                     if(overrideStateScheduler.hasOverride(pos) != null){
                         overrideStateScheduler.removeOverride(pos);
                     }

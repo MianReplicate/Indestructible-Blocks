@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class IndestructibleBlocks {
 
-    //TODO: Make a similar savable list to this but one that allows blocks to be removed regardless of their indestructibility state
     public static ArrayList<BlockState> pendingRemovalBlocks = Lists.newArrayList();
     public static final Logger LOGGER = LogManager.getLogger(ModResources.MOD_ID);
     public static ModConfiguration config;

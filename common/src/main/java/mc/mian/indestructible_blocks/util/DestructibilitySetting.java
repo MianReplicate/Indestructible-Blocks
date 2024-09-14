@@ -10,7 +10,7 @@ public enum DestructibilitySetting {
         this.setting = setting;
     }
 
-    private String setting;
+    private final String setting;
 
     public String getSetting(){
         return this.setting;

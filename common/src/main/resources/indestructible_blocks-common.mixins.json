@@ -4,9 +4,7 @@
   "package": "mc.mian.indestructible_blocks.mixin",
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
-    "LevelChunkMixin",
-    "ChunkAccessMixin",
-    "ChunkSerializerMixin"
+    "LevelChunkMixin"
   ],
   "client": [
   ],

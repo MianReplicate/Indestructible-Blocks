@@ -5,6 +5,7 @@ import mc.mian.indestructible_blocks.util.DestructibilitySetting;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.ModUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -30,6 +30,11 @@ public class DestructibilityEditor extends Item {
             BlockState blockState = context.getLevel().getBlockState(context.getClickedPos());
             Player player = context.getPlayer();
             if(player != null){
+                if(player.isCrouching()) {
+                    context.getItemInHand().use(context.getLevel(), player, context.getHand());
+                    return InteractionResult.PASS;
+                }
+
                 DestructibilitySetting setting = DestructibilitySetting.getEnum(context.getItemInHand().get(ModComponents.DESTRUCTIBILITY_SETTING.get()));
                 if(setting == DestructibilitySetting.BLOCK_ID){
                     DestructibilityState state = ModUtil.setIndestructibilityState(blockState.getBlockHolder().getRegisteredName(), !ModUtil.isInConfig(blockState));
@@ -39,8 +44,7 @@ public class DestructibilityEditor extends Item {
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.getBlockHolder().getRegisteredName()), true);
                     }
                 } else if(setting == DestructibilitySetting.ONE_BLOCK){
-                    ChunkAccess chunk = context.getLevel().getChunk(context.getClickedPos());
-                    DestructibilityState newState = ModUtil.changeOverride(chunk, context.getClickedPos());
+                    DestructibilityState newState = ModUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
                     if(newState != null){
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getSetting()), true);
                     } else {
