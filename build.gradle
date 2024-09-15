@@ -130,7 +130,7 @@ subprojects {
 }
 
 task publishMeEverywhere(){
-    dependsOn ":neoforge:publishUnified"
+    dependsOn ":forge:publishUnified"
     dependsOn ":fabric:publishUnified"
 }
 
