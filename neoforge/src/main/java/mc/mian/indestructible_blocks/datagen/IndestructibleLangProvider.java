@@ -1,14 +1,14 @@
 package mc.mian.indestructible_blocks.datagen;
 
-import mc.mian.indestructible_blocks.common.item.ModItems;
-import mc.mian.indestructible_blocks.util.ModResources;
+import mc.mian.indestructible_blocks.common.item.IndestructibleItems;
+import mc.mian.indestructible_blocks.util.IndestructibleResources;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
-public class ModLangProvider extends LanguageProvider {
-    public static final String MOD_ID = ModResources.MOD_ID;
+public class IndestructibleLangProvider extends LanguageProvider {
+    public static final String MOD_ID = IndestructibleResources.MOD_ID;
     
-    public ModLangProvider(PackOutput output) {
+    public IndestructibleLangProvider(PackOutput output) {
         super(output, MOD_ID, "en_us");
     }
 
@@ -28,11 +28,11 @@ public class ModLangProvider extends LanguageProvider {
     }
 
     public void addItemGroup(String title, String translation){
-        add("itemGroup."+ModResources.MOD_ID+"."+title, translation);
+        add("itemGroup."+ IndestructibleResources.MOD_ID+"."+title, translation);
     }
 
     public void addChatMessage(String title, String translation){
-        add("chat."+ModResources.MOD_ID+"."+title, translation);
+        add("chat."+ IndestructibleResources.MOD_ID+"."+title, translation);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ModLangProvider extends LanguageProvider {
 
         addGuiMessage("cannot_break", "This block is unbreakable");
         addGuiMessage("setting_state", "Changed Indestructibility Setting: %s");
-        addItem(ModItems.DESTRUCTIBILITY_EDITOR, "Destructibility Editor");
+        addItem(IndestructibleItems.DESTRUCTIBILITY_EDITOR, "Destructibility Editor");
 
         addItemGroup("indestructible_blocks", "Indestructible Blocks");
     }

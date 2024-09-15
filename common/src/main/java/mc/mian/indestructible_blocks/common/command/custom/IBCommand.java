@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic2CommandExceptionType;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
-import mc.mian.indestructible_blocks.util.ModUtil;
+import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -59,7 +59,7 @@ public class IBCommand {
     }
 
     private static int addBlockId(CommandSourceStack source, boolean add, Holder.Reference<Block> block) throws CommandSyntaxException{
-        DestructibilityState state = ModUtil.setIndestructibilityState(block.getRegisteredName(), add);
+        DestructibilityState state = IndestructibleUtil.setIndestructibilityState(block.getRegisteredName(), add);
         source.sendSuccess(() -> Component.translatable("gui.indestructible_blocks.indestructibility_state", block.getRegisteredName(), state.getSetting()), true);
         return Command.SINGLE_SUCCESS;
     }
@@ -74,7 +74,7 @@ public class IBCommand {
             int amount = 0;
             ServerLevel level = source.getLevel();
             for (BlockPos blockPos : BlockPos.betweenClosed(area.minX(), area.minY(), area.minZ(), area.maxX(), area.maxY(), area.maxZ())) {
-                ModUtil.changeOverride(level, blockPos, indestructible ? DestructibilityState.INDESTRUCTIBLE : DestructibilityState.DESTRUCTIBLE);
+                IndestructibleUtil.changeOverride(level, blockPos, indestructible ? DestructibilityState.INDESTRUCTIBLE : DestructibilityState.DESTRUCTIBLE);
                 amount++;
             }
             int finalAmount = amount;
