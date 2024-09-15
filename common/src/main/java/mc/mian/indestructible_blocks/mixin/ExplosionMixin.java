@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Mixin(Explosion.class)
-public class ExplosionDamageCalculatorMixin {
+public class ExplosionMixin {
     @Shadow @Final public Level level;
 
     @Redirect(method = "finalizeExplosion", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;"))
