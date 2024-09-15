@@ -221,3 +221,17 @@ idea.module {
             file('run')
     ]
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = mod_id
+            version = version + "-${loomPlatform}"
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
