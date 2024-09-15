@@ -2,7 +2,7 @@ package mc.mian.indestructible_blocks.common.level;
 
 import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
-import mc.mian.indestructible_blocks.util.ModResources;
+import mc.mian.indestructible_blocks.util.IndestructibleResources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class IndestructibleBlocksSavedData extends SavedData implements OverrideState {
+public class IndestructibleSavedData extends SavedData implements OverrideState {
     private final HashMap<BlockPos, DestructibilityState> state_overrides = new HashMap<>();
 
     @Override
@@ -62,8 +62,8 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
         return tag;
     }
 
-    public static IndestructibleBlocksSavedData load(CompoundTag tag) {
-        IndestructibleBlocksSavedData data = create();
+    public static IndestructibleSavedData load(CompoundTag tag) {
+        IndestructibleSavedData data = create();
         if (tag.contains("state_overrides", Tag.TAG_LIST)) {
             for (Tag override : tag.getList("state_overrides", Tag.TAG_COMPOUND)) {
                 if(override instanceof CompoundTag overrideCompound){
@@ -76,11 +76,11 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
         return data;
     }
 
-    public static IndestructibleBlocksSavedData create(){
-        return new IndestructibleBlocksSavedData();
+    public static IndestructibleSavedData create(){
+        return new IndestructibleSavedData();
     }
 
-    public static IndestructibleBlocksSavedData getOrCreate(DimensionDataStorage dataStorage){
-        return dataStorage.computeIfAbsent(IndestructibleBlocksSavedData::load, IndestructibleBlocksSavedData::create, ModResources.MOD_ID);
+    public static IndestructibleSavedData getOrCreate(DimensionDataStorage dataStorage){
+        return dataStorage.computeIfAbsent(IndestructibleSavedData::load, IndestructibleSavedData::create, IndestructibleResources.MOD_ID);
     }
 }

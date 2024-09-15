@@ -2,7 +2,7 @@ package mc.mian.indestructible_blocks.util;
 
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.api.OverrideState;
-import mc.mian.indestructible_blocks.common.level.IndestructibleBlocksSavedData;
+import mc.mian.indestructible_blocks.common.level.IndestructibleSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class ModUtil {
+public class IndestructibleUtil {
 
     // Determines checks if block is in the force removal list
     public static boolean isPendingRemoval(BlockState state){
@@ -28,9 +28,9 @@ public class ModUtil {
     }
 
     public static boolean playerTryToBreak(Player player, BlockState state, BlockPos pos){
-        if(!ModUtil.isBlockPosRemovable((ServerLevel) player.level(), pos)){
+        if(!IndestructibleUtil.isBlockPosRemovable((ServerLevel) player.level(), pos)){
             if(player.isCreative()){
-                ModUtil.addToPendingRemoval(state);
+                IndestructibleUtil.addToPendingRemoval(state);
             } else if(!player.isCreative()){
                 player.displayClientMessage(Component.translatable("gui.indestructible_blocks.cannot_break"), true);
                 return false;
@@ -67,7 +67,7 @@ public class ModUtil {
 
     // Overrides the destructibility state of the block below regardless of configuration
     public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos){
-        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        OverrideState overrideState = IndestructibleSavedData.getOrCreate(level.getDataStorage());
         DestructibilityState state = overrideState.hasOverride(pos);
         if(state == null){
             state = isInConfig(level.getBlockState(pos)) ? DestructibilityState.DESTRUCTIBLE : DestructibilityState.INDESTRUCTIBLE;
@@ -78,13 +78,13 @@ public class ModUtil {
     }
 
     public static DestructibilityState changeOverride(ServerLevel level, BlockPos pos, DestructibilityState state){
-        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        OverrideState overrideState = IndestructibleSavedData.getOrCreate(level.getDataStorage());
         overrideState.putOverride(pos, state);
         return state;
     }
 
     public static boolean isBlockPosRemovable(ServerLevel level, BlockPos pos){
-        OverrideState overrideState = IndestructibleBlocksSavedData.getOrCreate(level.getDataStorage());
+        OverrideState overrideState = IndestructibleSavedData.getOrCreate(level.getDataStorage());
         DestructibilityState state = overrideState.hasOverride(pos);
         if(state == null){
             return !isInConfig(level.getBlockState(pos));
