@@ -28,7 +28,7 @@ public class LevelChunkMixin {
             BlockState currentState = level.getBlockState(pos);
             if(newState.getBlock() != currentState.getBlock()){
                 ServerLevel serverLevel = (ServerLevel) level;
-                if(!IndestructibleUtil.isPendingRemoval(currentState) && !IndestructibleUtil.isBlockPosRemovable(serverLevel, pos)){
+                if(!IndestructibleUtil.isBlockPosRemovable(serverLevel, pos)){
                     cir.cancel();
                     level.sendBlockUpdated(pos, Blocks.AIR.defaultBlockState(), currentState, 3);
                 } else {
