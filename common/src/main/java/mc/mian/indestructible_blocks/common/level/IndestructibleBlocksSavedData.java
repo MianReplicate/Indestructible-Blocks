@@ -1,13 +1,10 @@
 package mc.mian.indestructible_blocks.common.level;
 
-import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.ModResources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
@@ -50,7 +47,7 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+    public CompoundTag save(CompoundTag tag) {
         if (!state_overrides.isEmpty()) {
 
             ListTag listTag = new ListTag();
@@ -65,7 +62,7 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
         return tag;
     }
 
-    public static IndestructibleBlocksSavedData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+    public static IndestructibleBlocksSavedData load(CompoundTag tag) {
         IndestructibleBlocksSavedData data = create();
         if (tag.contains("state_overrides", Tag.TAG_LIST)) {
             for (Tag override : tag.getList("state_overrides", Tag.TAG_COMPOUND)) {
@@ -84,6 +81,6 @@ public class IndestructibleBlocksSavedData extends SavedData implements Override
     }
 
     public static IndestructibleBlocksSavedData getOrCreate(DimensionDataStorage dataStorage){
-        return dataStorage.computeIfAbsent(new Factory<>(IndestructibleBlocksSavedData::create, IndestructibleBlocksSavedData::load, DataFixTypes.SAVED_DATA_FORCED_CHUNKS), ModResources.MOD_ID);
+        return dataStorage.computeIfAbsent(IndestructibleBlocksSavedData::load, IndestructibleBlocksSavedData::create, ModResources.MOD_ID);
     }
 }

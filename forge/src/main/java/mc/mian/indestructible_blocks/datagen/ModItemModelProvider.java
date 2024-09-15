@@ -3,8 +3,8 @@ package mc.mian.indestructible_blocks.datagen;
 import mc.mian.indestructible_blocks.common.item.ModItems;
 import mc.mian.indestructible_blocks.util.ModResources;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper efh) {

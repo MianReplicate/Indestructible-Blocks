@@ -24,9 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class IBCommand {
-    private static final Dynamic2CommandExceptionType ERROR_AREA_TOO_LARGE = new Dynamic2CommandExceptionType(
-            (object, object2) -> Component.translatableEscape("commands.fill.toobig", object, object2)
-    );
+    private static final Dynamic2CommandExceptionType ERROR_AREA_TOO_LARGE = new Dynamic2CommandExceptionType((object, object2) -> Component.translatable("commands.fill.toobig", new Object[]{object, object2}));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         dispatcher.register(
@@ -59,8 +57,8 @@ public class IBCommand {
     }
 
     private static int addBlockId(CommandSourceStack source, boolean add, Holder.Reference<Block> block) throws CommandSyntaxException{
-        DestructibilityState state = ModUtil.setIndestructibilityState(block.getRegisteredName(), add);
-        source.sendSuccess(() -> Component.translatable("gui.indestructible_blocks.indestructibility_state", block.getRegisteredName(), state.getSetting()), true);
+        DestructibilityState state = ModUtil.setIndestructibilityState(block.unwrapKey().get().location().toString(), add);
+        source.sendSuccess(() -> Component.translatable("gui.indestructible_blocks.indestructibility_state", block.unwrapKey().get().location().toString(), state.getSetting()), true);
         return Command.SINGLE_SUCCESS;
     }
 

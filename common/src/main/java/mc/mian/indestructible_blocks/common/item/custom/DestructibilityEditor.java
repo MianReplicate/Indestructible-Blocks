@@ -1,9 +1,9 @@
 package mc.mian.indestructible_blocks.common.item.custom;
 
-import mc.mian.indestructible_blocks.common.component.ModComponents;
 import mc.mian.indestructible_blocks.util.DestructibilitySetting;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.ModUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -35,13 +35,15 @@ public class DestructibilityEditor extends Item {
                     return InteractionResult.PASS;
                 }
 
-                DestructibilitySetting setting = DestructibilitySetting.getEnum(context.getItemInHand().get(ModComponents.DESTRUCTIBILITY_SETTING.get()));
+                CompoundTag tag = context.getItemInHand().getOrCreateTag();
+                String string_setting = tag.getString("destructibility_setting").isBlank() ? DestructibilitySetting.BLOCK_ID.getSetting() : tag.getString("destructibility_setting");
+                DestructibilitySetting setting = DestructibilitySetting.getEnum(string_setting);
                 if(setting == DestructibilitySetting.BLOCK_ID){
-                    DestructibilityState state = ModUtil.setIndestructibilityState(blockState.getBlockHolder().getRegisteredName(), !ModUtil.isInConfig(blockState));
+                    DestructibilityState state = ModUtil.setIndestructibilityState(blockState.getBlockHolder().unwrapKey().get().location().toString(), !ModUtil.isInConfig(blockState));
                     if(state != null){
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.indestructibility_state", blockState.getBlockHolder().getRegisteredName(), state.toString()), true);
+                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.indestructibility_state", blockState.getBlockHolder().unwrapKey().get().location().toString(), state.toString()), true);
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.getBlockHolder().getRegisteredName()), true);
+                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.getBlockHolder().unwrapKey().get().location().toString()), true);
                     }
                 } else if(setting == DestructibilitySetting.ONE_BLOCK){
                     DestructibilityState newState = ModUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
@@ -61,8 +63,10 @@ public class DestructibilityEditor extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if(player.isCrouching() && !level.isClientSide()){
             ItemStack item = player.getItemInHand(usedHand);
-            DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getSetting().equals(item.get(ModComponents.DESTRUCTIBILITY_SETTING.get())) ? DestructibilitySetting.ONE_BLOCK: DestructibilitySetting.BLOCK_ID;
-            item.set(ModComponents.DESTRUCTIBILITY_SETTING.get(), set.getSetting());
+            CompoundTag tag = item.getOrCreateTag();
+            DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getSetting().equals(tag.getString("destructibility_setting")) || tag.getString("destructibility_setting").isBlank() ? DestructibilitySetting.ONE_BLOCK: DestructibilitySetting.BLOCK_ID;
+            tag.putString("destructibility_setting", set.getSetting());
+            item.setTag(tag);
             player.displayClientMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getSetting()), true);
             return InteractionResultHolder.consume(item);
         }

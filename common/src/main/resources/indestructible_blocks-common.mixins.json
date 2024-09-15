@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
     "LevelChunkMixin",
-    "ExplosionDamageCalculatorMixin"
+    "ExplosionMixin"
   ],
   "client": [
   ],

@@ -115,13 +115,6 @@ public class RegistrySupplierHolder<R, T extends R> implements Holder<R>, Suppli
         return this.holder != null && this.holder.is(tagKey);
     }
 
-    /** @deprecated */
-    @Deprecated
-    public boolean is(Holder<R> holder) {
-        this.bind(false);
-        return this.holder != null && this.holder.is(holder);
-    }
-
     public Stream<TagKey<R>> tags() {
         this.bind(false);
         return this.holder != null ? this.holder.tags() : Stream.empty();

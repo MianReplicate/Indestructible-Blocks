@@ -1,6 +1,6 @@
 package mc.mian.indestructible_blocks.fabric;
 
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import mc.mian.indestructible_blocks.common.command.custom.IBCommand;
 import mc.mian.indestructible_blocks.util.ModResources;
 import mc.mian.indestructible_blocks.util.ModUtil;
@@ -9,13 +9,13 @@ import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.config.ConfigHolder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.neoforged.fml.config.ModConfig;
+import net.minecraftforge.fml.config.ModConfig;
 
 public class IndestructibleBlocksFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        NeoForgeConfigRegistry.INSTANCE.register(ModResources.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ForgeConfigRegistry.INSTANCE.register(ModResources.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
 

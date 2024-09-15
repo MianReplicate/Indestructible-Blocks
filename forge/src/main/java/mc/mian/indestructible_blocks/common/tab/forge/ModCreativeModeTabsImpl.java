@@ -1,4 +1,4 @@
-package mc.mian.indestructible_blocks.common.tab.neoforge;
+package mc.mian.indestructible_blocks.common.tab.forge;
 
 import mc.mian.indestructible_blocks.common.tab.ModCreativeModeTabs;
 import mc.mian.indestructible_blocks.common.item.ModItems;

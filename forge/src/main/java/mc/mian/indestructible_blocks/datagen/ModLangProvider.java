@@ -3,7 +3,7 @@ package mc.mian.indestructible_blocks.datagen;
 import mc.mian.indestructible_blocks.common.item.ModItems;
 import mc.mian.indestructible_blocks.util.ModResources;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.minecraftforge.common.data.LanguageProvider;
 
 public class ModLangProvider extends LanguageProvider {
     public static final String MOD_ID = ModResources.MOD_ID;

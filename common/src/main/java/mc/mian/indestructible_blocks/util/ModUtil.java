@@ -19,7 +19,7 @@ public class ModUtil {
     }
 
     public static boolean isInConfig(BlockState state){
-        return isInConfig(state.getBlockHolder().getRegisteredName());
+        return isInConfig(state.getBlockHolder().unwrapKey().get().location().toString());
     }
 
     public static boolean isInConfig(String blockId){

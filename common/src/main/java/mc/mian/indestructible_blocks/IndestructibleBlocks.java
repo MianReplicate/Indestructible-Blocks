@@ -1,6 +1,5 @@
 package mc.mian.indestructible_blocks;
 
-import mc.mian.indestructible_blocks.common.component.ModComponents;
 import mc.mian.indestructible_blocks.common.tab.ModCreativeModeTabs;
 import mc.mian.indestructible_blocks.common.item.ModItems;
 import mc.mian.indestructible_blocks.config.ModConfiguration;
@@ -21,7 +20,6 @@ public class IndestructibleBlocks {
     public static void init() {
         LOGGER.info("Muahahah, we shall make every block out of bedrock material!");
         ModCreativeModeTabs.TABS.register();
-        ModComponents.DATA_COMPONENT_TYPES.register();
         ModItems.ITEMS.register();
     }
 }

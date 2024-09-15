@@ -5,50 +5,60 @@ evaluationDependsOn(':common')
 
 def loomPlatform = project.property('loom.platform')
 def projectName
-if(loomPlatform == 'neoforge')
-    projectName = 'NeoForge'
+if(loomPlatform == 'forge')
+    projectName = 'Forge'
 else
     projectName = 'Fabric'
 
 def generatedResources = file("src/generated/resources")
 
 sourceSets.main.resources.srcDirs = [ 'src/main/resources', {
-    project(':neoforge').file('src/generated/resources').absolutePath
+    if(loomPlatform == 'fabric'){
+        project(':forge').file('src/generated/resources').absolutePath
+    }
 }
 ]
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
-    if(loomPlatform == 'neoforge'){
+    if(loomPlatform == 'forge'){
         runs {
-            data {
-                data()
-                programArgs "--all", "--mod", "${mod_id}"
-                programArgs "--output", generatedResources.absolutePath
-            }
             client {
                 programArgs "--username", "Replicate###"
             }
         }
 
-        mods {
-            forge {
-                sourceSet project(":neoforge").sourceSets.main
+        forge {
+            if(accessWidenerFile.exists()) {
+                convertAccessWideners = true
+                extraAccessWideners.add accessWidenerFile.name
+            }
+
+            if(file("src/main/resources/${mod_id}.mixins.json").exists()) {
+                mixinConfig "${mod_id}.mixins.json"
+            }
+
+            if(getRootProject().file("common/src/main/resources/${mod_id}-common.mixins.json").exists()) {
+                mixinConfig "${mod_id}-common.mixins.json"
+            }
+
+            dataGen {
+                mod "${mod_id}"
             }
         }
     }
 }
 
-def resourceTargets = ['fabric.mod.json', 'neoforge.mods.toml']
+def resourceTargets = ['fabric.mod.json', 'mods.toml']
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mod_id                 : mod_id, mod_name: mod_name, mod_version: mod_version,
-                         mod_authors            : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
-                         logo_file:logo_file,
-                         issue_tracker_url      : issue_tracker_url,
-                         mod_license            : mod_license,
-                         minecraft_version      : minecraft_version, fabric_loader_version: fabric_loader_version,
-                         fabric_api_version     : fabric_api_version, repository_url: repository_url,
-                         neo_version_range: neo_version_range, neo_version: neo_version, neo_loader_version_range: neo_loader_version_range
+def replaceProperties = [mod_id            : mod_id, mod_name: mod_name, mod_version: mod_version,
+                         mod_authors       : mod_authors, mod_credits:mod_credits, mod_description: mod_description,
+                         logo_file         :logo_file,
+                         issue_tracker_url : issue_tracker_url,
+                         mod_license       : mod_license,
+                         minecraft_version : minecraft_version, fabric_loader_version: fabric_loader_version,
+                         fabric_api_version: fabric_api_version, repository_url: repository_url,
+                         forge_version_range : forge_version_range, forge_version: forge_version, forge_loader_version_range: forge_loader_version_range
                             ]
 processResources {
     inputs.properties replaceProperties
@@ -86,7 +96,7 @@ architectury {
     platformSetupLoomIde()
 
     if(loomPlatform == 'fabric') fabric()
-    else if (loomPlatform == 'neoforge') neoForge()
+    else if (loomPlatform == 'forge') forge()
 }
 
 dependencies {
@@ -110,14 +120,14 @@ dependencies {
         modRuntimeOnly("curse.maven:ferritecore-${ferritecore_fabric_id}:${ferritecore_fabric}")
         modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_fabric}")
 //        modRuntimeOnly("curse.maven:configured-${configured_id}:${configured_fabric}")
-    } else if(loomPlatform == 'neoforge'){
-        neoForge "net.neoforged:neoforge:${neo_version}"
+    } else if(loomPlatform == 'forge'){
+        forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
         // currently broken :<
 //        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-neoforge")
-        runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-        runtimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_forge}")
-        runtimeOnly("curse.maven:ferritecore-${ferritecore_forge_id}:${ferritecore_forge}")
+//        runtimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+//        runtimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix_forge}")
+//        runtimeOnly("curse.maven:ferritecore-${ferritecore_forge_id}:${ferritecore_forge}")
 
         // disable when doing datagen
 //        runtimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks_forge}")

@@ -6,6 +6,6 @@ public class ModResources {
     public static final String MOD_ID = "indestructible_blocks";
 
     public static ResourceLocation modLoc(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+        return new ResourceLocation(MOD_ID, name);
     }
 }

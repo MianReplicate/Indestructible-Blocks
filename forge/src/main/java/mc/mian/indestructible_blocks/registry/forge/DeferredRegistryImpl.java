@@ -1,12 +1,12 @@
-package mc.mian.indestructible_blocks.registry.neoforge;
+package mc.mian.indestructible_blocks.registry.forge;
 
-import mc.mian.indestructible_blocks.neoforge.IndestructibleBlocksNeoForge;
+import mc.mian.indestructible_blocks.forge.IndestructibleBlocksForge;
 import mc.mian.indestructible_blocks.registry.DeferredRegistry;
 import mc.mian.indestructible_blocks.registry.RegistrySupplier;
 import mc.mian.indestructible_blocks.registry.RegistrySupplierHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +34,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public void register() {
-            this.register.register(IndestructibleBlocksNeoForge.modEventBus);
+            this.register.register(IndestructibleBlocksForge.modEventBus);
         }
 
 

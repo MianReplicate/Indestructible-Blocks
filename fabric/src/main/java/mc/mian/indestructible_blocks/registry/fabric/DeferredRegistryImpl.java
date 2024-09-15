@@ -41,7 +41,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
-            ResourceLocation registeredId = ResourceLocation.fromNamespaceAndPath(this.modid, id);
+            ResourceLocation registeredId = new ResourceLocation(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
             return registrySupplier;
@@ -49,7 +49,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public <R extends T> RegistrySupplierHolder<T, R> registerForHolder(String id, Supplier<R> supplier){
-            ResourceLocation registeredId = ResourceLocation.fromNamespaceAndPath(this.modid, id);
+            ResourceLocation registeredId = new ResourceLocation(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
             return RegistrySupplierHolder.create(this.resourceKey, registeredId);
