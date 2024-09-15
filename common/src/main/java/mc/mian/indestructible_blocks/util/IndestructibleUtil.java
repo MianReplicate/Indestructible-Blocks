@@ -86,10 +86,16 @@ public class IndestructibleUtil {
     public static boolean isBlockPosRemovable(ServerLevel level, BlockPos pos){
         OverrideState overrideState = IndestructibleSavedData.getOrCreate(level.getDataStorage());
         DestructibilityState state = overrideState.hasOverride(pos);
-        if(state == null){
-            return !isInConfig(level.getBlockState(pos));
-        } else {
-            return state != DestructibilityState.INDESTRUCTIBLE;
-        }
+        BlockState blockState = level.getBlockState(pos);
+        if(!isPendingRemoval(blockState))
+            if(state == null)
+                // Is the block id in the config?
+                return !isInConfig(blockState);
+             else
+                // Is block's state overridden to be destructible?
+                return state != DestructibilityState.INDESTRUCTIBLE;
+        else
+            // Is block supposed to be removed?
+            return isPendingRemoval(blockState);
     }
 }
