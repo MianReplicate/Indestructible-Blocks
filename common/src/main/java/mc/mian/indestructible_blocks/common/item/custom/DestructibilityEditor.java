@@ -2,7 +2,7 @@ package mc.mian.indestructible_blocks.common.item.custom;
 
 import mc.mian.indestructible_blocks.util.DestructibilitySetting;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
-import mc.mian.indestructible_blocks.util.ModUtil;
+import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -39,14 +39,14 @@ public class DestructibilityEditor extends Item {
                 String string_setting = tag.getString("destructibility_setting").isBlank() ? DestructibilitySetting.BLOCK_ID.getSetting() : tag.getString("destructibility_setting");
                 DestructibilitySetting setting = DestructibilitySetting.getEnum(string_setting);
                 if(setting == DestructibilitySetting.BLOCK_ID){
-                    DestructibilityState state = ModUtil.setIndestructibilityState(blockState.getBlockHolder().unwrapKey().get().location().toString(), !ModUtil.isInConfig(blockState));
+                    DestructibilityState state = IndestructibleUtil.setIndestructibilityState(blockState.getBlockHolder().unwrapKey().get().location().toString(), !IndestructibleUtil.isInConfig(blockState));
                     if(state != null){
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.indestructibility_state", blockState.getBlockHolder().unwrapKey().get().location().toString(), state.toString()), true);
                     } else {
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.getBlockHolder().unwrapKey().get().location().toString()), true);
                     }
                 } else if(setting == DestructibilitySetting.ONE_BLOCK){
-                    DestructibilityState newState = ModUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
+                    DestructibilityState newState = IndestructibleUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
                     if(newState != null){
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getSetting()), true);
                     } else {

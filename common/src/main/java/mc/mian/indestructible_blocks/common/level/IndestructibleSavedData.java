@@ -67,9 +67,9 @@ public class IndestructibleSavedData extends SavedData implements OverrideState 
         if (tag.contains("state_overrides", Tag.TAG_LIST)) {
             for (Tag override : tag.getList("state_overrides", Tag.TAG_COMPOUND)) {
                 if(override instanceof CompoundTag overrideCompound){
-                    IntArrayTag list = (IntArrayTag) overrideCompound.get("block_pos");
+                    Tag list = overrideCompound.get("block_pos");
                     String setting = overrideCompound.getString("state");
-                    data.putOverride(new BlockPos(list.get(0).getAsInt(), list.get(1).getAsInt(), list.get(2).getAsInt()), DestructibilityState.getEnum(setting));
+                    data.putOverride(NbtUtils.readBlockPos((CompoundTag) list), DestructibilityState.getEnum(setting));
                 }
             }
         }
