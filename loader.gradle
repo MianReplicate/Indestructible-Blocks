@@ -90,8 +90,6 @@ architectury {
 }
 
 dependencies {
-    implementation project(path: ':common')
-
     // thanks sodium for adding neoforge support, very cool :>
 
     if(loomPlatform == 'fabric') {
@@ -214,12 +212,20 @@ idea.module {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            groupId = group
-            artifactId = mod_id
-            version = version + "-${loomPlatform}"
-            from components.java
-        }
+        if(loomPlatform == 'forge')
+            mavenForge(MavenPublication) {
+                groupId = group
+                artifactId = mod_id
+                version = version + "-${loomPlatform}"
+                from components.java
+            }
+        else
+            mavenFabric(MavenPublication) {
+                groupId = group
+                artifactId = mod_id
+                version = version + "-${loomPlatform}"
+                from components.java
+            }
     }
     repositories {
         mavenLocal()
