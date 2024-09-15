@@ -24,6 +24,7 @@ subprojects {
 
     repositories {
         mavenLocal()
+        mavenCentral()
         maven { url 'https://maven.parchmentmc.org' }
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
@@ -122,7 +123,6 @@ subprojects {
             expand project.properties
         }
     }
-
 }
 
 task publishMeEverywhere(){
