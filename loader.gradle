@@ -212,8 +212,8 @@ idea.module {
 
 publishing {
     publications {
-        if(loomPlatform == 'forge')
-            mavenForge(MavenPublication) {
+        if(loomPlatform == 'neoforge')
+            mavenNeoForge(MavenPublication) {
                 groupId = group
                 artifactId = mod_id
                 version = version + "-${loomPlatform}"
