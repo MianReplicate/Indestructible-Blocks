@@ -1,12 +1,12 @@
 package mc.mian.indestructible_blocks;
 
+import com.google.common.collect.Lists;
 import mc.mian.indestructible_blocks.common.component.IndestructibleComponents;
-import mc.mian.indestructible_blocks.common.tab.IndestructibleTabs;
 import mc.mian.indestructible_blocks.common.item.IndestructibleItems;
+import mc.mian.indestructible_blocks.common.tab.IndestructibleTabs;
 import mc.mian.indestructible_blocks.config.IndestructibleConfiguration;
 import mc.mian.indestructible_blocks.util.IndestructibleResources;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
