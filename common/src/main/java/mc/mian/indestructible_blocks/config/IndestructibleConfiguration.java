@@ -1,7 +1,7 @@
 package mc.mian.indestructible_blocks.config;
 
+import com.google.common.collect.Lists;
 import net.minecraftforge.common.ForgeConfigSpec;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 
