@@ -1,14 +1,14 @@
 package mc.mian.indestructible_blocks.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ConfigHolder {
-    public static final ModConfigSpec SERVER_SPEC;
+    public static final ForgeConfigSpec SERVER_SPEC;
     public static final IndestructibleConfiguration SERVER;
 
     static{
-        final Pair<IndestructibleConfiguration, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(IndestructibleConfiguration::new);
+        final Pair<IndestructibleConfiguration, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(IndestructibleConfiguration::new);
         SERVER = specPair.getLeft();
         SERVER_SPEC = specPair.getRight();
     }

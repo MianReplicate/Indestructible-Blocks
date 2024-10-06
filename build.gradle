@@ -22,15 +22,21 @@ subprojects {
     version = "${mod_version}+${minecraft_version}"
     group = mod_base_package
 
+    project.ext {
+        accessWidenerFile = file("common/src/main/resources/${mod_id}.accesswidener")
+    }
+
     repositories {
         mavenLocal()
-        mavenCentral()
         maven { url 'https://maven.parchmentmc.org' }
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
+        }
         maven {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
@@ -55,6 +61,7 @@ subprojects {
             url = "https://modmaven.dev"
         }
         maven { url "https://maven.neoforged.net/releases/" }
+        maven { url "https://maven.minecraftforge.net/" }
         maven { url 'https://jitpack.io' }
     }
 
@@ -119,10 +126,11 @@ subprojects {
             inputs.property "${it.key}", "${it.value}"
         }
 
-        filesMatching([ '*.mixins.json', 'META-INF/neoforge.mods.toml', 'fabric.mod.json', '*.common.json' ]) {
+        filesMatching([ '*.mixins.json', 'META-INF/mods.toml', 'fabric.mod.json', '*.common.json', 'META-INF/mods.toml']) {
             expand project.properties
         }
     }
+
 }
 
 apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'

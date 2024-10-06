@@ -1,5 +1,6 @@
 package mc.mian.indestructible_blocks.neoforge;
 
+import fuzs.forgeconfigapiport.neoforge.api.forge.v4.ForgeConfigRegistry;
 import mc.mian.indestructible_blocks.IndestructibleBlocks;
 import mc.mian.indestructible_blocks.config.ConfigHolder;
 import mc.mian.indestructible_blocks.datagen.IndestructibleDataGenerators;
@@ -22,7 +23,7 @@ public class IndestructibleBlocksNeoForge {
         modEventBus = modEventBusParam;
         IEventBus eventBus = NeoForge.EVENT_BUS;
 
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ForgeConfigRegistry.INSTANCE.register(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         if(FMLEnvironment.dist == Dist.CLIENT)
             ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
