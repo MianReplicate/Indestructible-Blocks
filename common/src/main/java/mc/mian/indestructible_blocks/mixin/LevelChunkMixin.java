@@ -22,7 +22,7 @@ public class LevelChunkMixin {
 
     @Shadow @Final private Level level;
 
-    @Inject(method = "setBlockState", at = @At("HEAD"))
+    @Inject(method = "setBlockState", at = @At("HEAD"), cancellable = true)
     private void remove(BlockPos pos, BlockState newState, boolean isMoving, CallbackInfoReturnable<BlockState> cir) {
         if(!level.isClientSide){
             BlockState currentState = level.getBlockState(pos);
