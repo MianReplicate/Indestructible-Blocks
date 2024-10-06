@@ -5,10 +5,12 @@ import mc.mian.indestructible_blocks.config.ConfigHolder;
 import mc.mian.indestructible_blocks.datagen.IndestructibleDataGenerators;
 import mc.mian.indestructible_blocks.neoforge.event.IndestructibleEvents;
 import mc.mian.indestructible_blocks.util.IndestructibleResources;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -21,7 +23,8 @@ public class IndestructibleBlocksNeoForge {
         IEventBus eventBus = NeoForge.EVENT_BUS;
 
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
-        ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        if(FMLEnvironment.dist == Dist.CLIENT)
+            ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
