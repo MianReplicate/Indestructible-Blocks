@@ -119,30 +119,37 @@ architectury {
 
 dependencies {
     // thanks sodium for adding neoforge support, very cool :>
-    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
+    if(!disable_runtimes.toBoolean()) {
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loomPlatform}:${jei_version}")
+
+        if(loomPlatform == 'fabric'){
+            modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
+            modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
+            modRuntimeOnly("curse.maven:ferritecore-${ferritecore_id}:${ferritecore}")
+            modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks}")
+        }
+    }
 
     if(loomPlatform != 'forge'){
         modApi "fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"
         include "fuzs.forgeconfigapiport:forgeconfigapiport-${loomPlatform}:${forge_config_api_port_version}"
     }
 
-    if(loomPlatform == 'fabric') {
-        modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-        modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+    switch(loomPlatform){
+        case 'forge':
+            forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-        modRuntimeOnly("maven.modrinth:sodium:${sodium_version}-fabric")
-        modRuntimeOnly("curse.maven:modernfix-${modern_fix_id}:${modern_fix}")
-        modRuntimeOnly("curse.maven:ferritecore-${ferritecore_id}:${ferritecore}")
-        modRuntimeOnly("curse.maven:mousetweaks-${mouse_tweaks_id}:${mouse_tweaks}")
-//        modRuntimeOnly("curse.maven:configured-${configured_id}:${configured_fabric}")
-    } else if(loomPlatform == 'forge') {
-        forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-        // have to include mixinextras for Forge lol
-        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-        implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
-    } else if(loomPlatform == 'neoforge'){
-        neoForge "net.neoforged:neoforge:${neo_version}"
+            // have to include mixinextras for Forge lol
+            compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+            implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
+            break
+        case 'fabric':
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+            modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
+            break
+        case 'neoforge':
+            neoForge "net.neoforged:neoforge:${neo_version}"
+            break
     }
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }

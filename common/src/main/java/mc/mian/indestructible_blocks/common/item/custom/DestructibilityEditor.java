@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,14 +57,14 @@ public class DestructibilityEditor extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         if(player.isCrouching() && !level.isClientSide()){
             ItemStack item = player.getItemInHand(usedHand);
             DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getSetting().equals(item.get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get())) ? DestructibilitySetting.ONE_BLOCK: DestructibilitySetting.BLOCK_ID;
             item.set(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), set.getSetting());
             player.displayClientMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getSetting()), true);
-            return InteractionResultHolder.consume(item);
+            return InteractionResult.CONSUME.heldItemTransformedTo(item);
         }
-        return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+        return InteractionResult.PASS;
     }
 }

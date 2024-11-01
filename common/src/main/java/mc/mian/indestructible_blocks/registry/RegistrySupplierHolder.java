@@ -56,14 +56,14 @@ public class RegistrySupplierHolder<R, T extends R> implements Holder<R>, Suppli
     }
 
     protected @Nullable Registry<R> getRegistry() {
-        return (Registry) BuiltInRegistries.REGISTRY.get(this.key.registry());
+        return (Registry) BuiltInRegistries.REGISTRY.get(this.key.registry()).orElse(null).value();
     }
 
     protected final void bind(boolean throwOnMissingRegistry) {
         if (this.holder == null) {
             Registry<R> registry = this.getRegistry();
             if (registry != null) {
-                this.holder = registry.getHolder(this.key).orElse(null);
+                this.holder = registry.get(this.key).orElse(null);
             } else if (throwOnMissingRegistry) {
                 String var10002 = String.valueOf(this);
                 throw new IllegalStateException("Registry not present for " + var10002 + ": " + this.key.registry());
