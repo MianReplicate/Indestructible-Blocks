@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "indestructible_blocks:item/destructibility_editor"
+  }
+}

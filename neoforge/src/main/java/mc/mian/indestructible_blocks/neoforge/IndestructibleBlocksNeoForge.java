@@ -24,13 +24,15 @@ public class IndestructibleBlocksNeoForge {
         IEventBus eventBus = NeoForge.EVENT_BUS;
 
         ForgeConfigRegistry.INSTANCE.register(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
-        if(FMLEnvironment.dist == Dist.CLIENT)
-            ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
 
         eventBus.register(IndestructibleEvents.class);
-        modEventBus.register(IndestructibleDataGenerators.class);
+
+        if(FMLEnvironment.dist == Dist.CLIENT) {
+            ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+            modEventBus.register(IndestructibleDataGenerators.class);
+        }
     }
 }
