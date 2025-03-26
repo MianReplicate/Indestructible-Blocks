@@ -1,5 +1,8 @@
 package mc.mian.indestructible_blocks.common.level;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.IndestructibleResources;
@@ -7,14 +10,65 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.entity.raid.Raids;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class IndestructibleSavedData extends SavedData implements OverrideState {
     private final HashMap<BlockPos, DestructibilityState> state_overrides = new HashMap<>();
+
+    public static final SavedDataType<IndestructibleSavedData> TYPE = new SavedDataType<>(
+            // Best to preface the identifier with your mod id followed by an underscore
+            // Slashes will throw an error as the folders are not present
+            // Will resolve to `saves/<world_name>/data/examplemod_example.dat`
+            IndestructibleResources.MOD_ID,
+            // Constructor for the new instance
+            IndestructibleSavedData::new,
+            // Codec factory to encode and decode the data
+            ctx -> RecordCodecBuilder.create(instance -> instance.group(
+                    RecordCodecBuilder.point(ctx.levelOrThrow()),
+                    StateCodec.CODEC.listOf().optionalFieldOf("state_overrides", List.of())
+                            .forGetter()
+            ).apply(instance, IndestructibleSavedData::new)),
+            DataFixTypes.SAVED_DATA_FORCED_CHUNKS
+    );
+    public static final Codec<Raids> CODEC = RecordCodecBuilder.create((instance) ->
+            instance.group(
+                    Raids.RaidWithId.CODEC.listOf().optionalFieldOf("raids", List.of()).forGetter((raids) -> raids.raidMap.int2ObjectEntrySet().stream().map(Raids.RaidWithId::from).toList()),
+                    Codec.INT.fieldOf("next_id").forGetter((raids) -> raids.nextId),
+                    Codec.INT.fieldOf("tick").forGetter((raids) -> raids.tick)).apply(instance, Raids::new));
+
+    private record StateCodec(BlockPos blockPos, String state){
+        public static final Codec<Map<BlockPos, String>> CODEC =
+                Codec.unboundedMap(BlockPos.CODEC, Codec.STRING);
+//                RecordCodecBuilder.create((instance) ->
+//                        instance.group(BlockPos.CODEC.fieldOf("pos").forGetter(StateCodec::pos),
+//                                Codec.STRING.fieldOf("state").forGetter(StateCodec::stateToString)));
+
+        private StateCodec(BlockPos blockPos, String state){
+            this.blockPos = blockPos;
+            this.state = state;
+        }
+
+        public static StateCodec from(Object2ObjectMap.Entry<BlockPos, String> entry) {
+            return new StateCodec(entry.getKey(), entry.getValue());
+        }
+
+        public BlockPos pos() {
+            return this.blockPos;
+        }
+
+        public String state() {
+            return this.state;
+        }
+    }
 
     @Override
     public void putOverride(BlockPos pos, DestructibilityState setting) {
@@ -83,6 +137,6 @@ public class IndestructibleSavedData extends SavedData implements OverrideState 
     }
 
     public static IndestructibleSavedData getOrCreate(DimensionDataStorage dataStorage){
-        return dataStorage.computeIfAbsent(new Factory<>(IndestructibleSavedData::create, IndestructibleSavedData::load, DataFixTypes.SAVED_DATA_FORCED_CHUNKS), IndestructibleResources.MOD_ID);
+        return dataStorage.computeIfAbsent(TYPE);
     }
 }
