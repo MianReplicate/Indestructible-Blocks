@@ -60,7 +60,7 @@ public class IBCommand {
 
     private static int addBlockId(CommandSourceStack source, boolean add, Holder.Reference<Block> block) throws CommandSyntaxException{
         DestructibilityState state = IndestructibleUtil.setIndestructibilityState(block.getRegisteredName(), add);
-        source.sendSuccess(() -> Component.translatable("gui.indestructible_blocks.indestructibility_state", block.getRegisteredName(), state.getSetting()), true);
+        source.sendSuccess(() -> Component.translatable("gui.indestructible_blocks.indestructibility_state", block.getRegisteredName(), state.getDisplay()), true);
         return Command.SINGLE_SUCCESS;
     }
 

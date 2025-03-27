@@ -1,6 +1,6 @@
 package mc.mian.indestructible_blocks.fabric;
 
-import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import mc.mian.indestructible_blocks.common.command.custom.IBCommand;
 import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import mc.mian.indestructible_blocks.util.IndestructibleResources;
@@ -15,7 +15,7 @@ public class IndestructibleBlocksFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ForgeConfigRegistry.INSTANCE.register(IndestructibleResources.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        ConfigRegistry.INSTANCE.register(IndestructibleResources.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
 

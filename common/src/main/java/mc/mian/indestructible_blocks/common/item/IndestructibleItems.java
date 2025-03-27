@@ -19,7 +19,7 @@ public class IndestructibleItems {
 
     public static final RegistrySupplier<Item> DESTRUCTIBILITY_EDITOR = registerItem("destructibility_editor",
             (properties) -> new DestructibilityEditor(properties
-                    .stacksTo(1).rarity(Rarity.RARE).component(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), DestructibilitySetting.BLOCK_ID.getSetting())));
+                    .stacksTo(1).rarity(Rarity.RARE).component(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), DestructibilitySetting.BLOCK_ID)));
 
     public static RegistrySupplier<Item> registerItem(String name, Function<Item.Properties, Item> itemFunc){
         return ITEMS.register(name, () -> itemFunc.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndestructibleResources.MOD_ID, name)))));

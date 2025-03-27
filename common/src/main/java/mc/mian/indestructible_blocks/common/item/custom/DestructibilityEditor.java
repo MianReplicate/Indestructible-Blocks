@@ -34,7 +34,7 @@ public class DestructibilityEditor extends Item {
                     return InteractionResult.PASS;
                 }
 
-                DestructibilitySetting setting = DestructibilitySetting.getEnum(context.getItemInHand().get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get()));
+                DestructibilitySetting setting = context.getItemInHand().get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get());
                 if(setting == DestructibilitySetting.BLOCK_ID){
                     DestructibilityState state = IndestructibleUtil.setIndestructibilityState(blockState.getBlockHolder().getRegisteredName(), !IndestructibleUtil.isInConfig(blockState));
                     if(state != null){
@@ -45,7 +45,7 @@ public class DestructibilityEditor extends Item {
                 } else if(setting == DestructibilitySetting.ONE_BLOCK){
                     DestructibilityState newState = IndestructibleUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
                     if(newState != null){
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getSetting()), true);
+                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getDisplay()), true);
                     } else {
                         player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_block_state", context.getClickedPos()), true);
                     }
@@ -60,9 +60,9 @@ public class DestructibilityEditor extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         if(player.isCrouching() && !level.isClientSide()){
             ItemStack item = player.getItemInHand(usedHand);
-            DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getSetting().equals(item.get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get())) ? DestructibilitySetting.ONE_BLOCK: DestructibilitySetting.BLOCK_ID;
-            item.set(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), set.getSetting());
-            player.displayClientMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getSetting()), true);
+            DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getId() == item.get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get()).getId() ? DestructibilitySetting.ONE_BLOCK: DestructibilitySetting.BLOCK_ID;
+            item.set(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), set);
+            player.displayClientMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getDisplay()), true);
             return InteractionResult.CONSUME.heldItemTransformedTo(item);
         }
         return InteractionResult.PASS;
