@@ -96,7 +96,9 @@ processResources {
             }
         }
     }
-
+    from(rootProject.file("common/src/main/resources")) {
+        include("indestructible_blocks.accesswidener")
+    }
 }
 
 configurations {
@@ -205,6 +207,8 @@ remapJar {
     inputFile = shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier = null
+    if(loomPlatform == 'neoforge')
+        atAccessWideners.add("indestructible_blocks.accesswidener")
 }
 
 jar {
