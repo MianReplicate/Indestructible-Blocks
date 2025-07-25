@@ -34,7 +34,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public void register() {
-            this.register.register(IndestructibleBlocksForge.modEventBus);
+            this.register.register(IndestructibleBlocksForge.modBusGroup);
         }
 
 

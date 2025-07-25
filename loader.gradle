@@ -143,6 +143,7 @@ dependencies {
 
             // have to include mixinextras for Forge lol
             compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+            annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.7'
             implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
             break
         case 'fabric':
