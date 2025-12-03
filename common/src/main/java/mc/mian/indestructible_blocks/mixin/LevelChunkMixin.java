@@ -24,7 +24,7 @@ public class LevelChunkMixin {
 
     @Inject(method = "setBlockState", at = @At("HEAD"), cancellable = true)
     private void remove(BlockPos pos, BlockState newState, int i, CallbackInfoReturnable<BlockState> cir) {
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             BlockState currentState = level.getBlockState(pos);
             if(newState.getBlock() != currentState.getBlock()){
                 ServerLevel serverLevel = (ServerLevel) level;

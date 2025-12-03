@@ -30,7 +30,7 @@ public class IndestructibleBlocksNeoForge {
 
         eventBus.register(IndestructibleEvents.class);
 
-        if(FMLEnvironment.dist == Dist.CLIENT) {
+        if(FMLEnvironment.getDist() == Dist.CLIENT) {
             ModLoadingContext.get().getActiveContainer().registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
             modEventBus.register(IndestructibleDataGenerators.class);
         }
