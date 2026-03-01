@@ -116,9 +116,9 @@ processResources {
             forge_version_range : forge_version_range,
             forge_version: forge_version,
             forge_loader_version_range: forge_loader_version_range,
-            common_networking_version: common_networking_version,
             forge_config_api_port_version: forge_config_api_port_version,
-            maximum_minecraft_version: maximum_minecraft_version
+            maximum_minecraft_version: maximum_minecraft_version,
+            java_version: java_version
     ]
 
     var jsonExpandProps = expandProps.collectEntries {

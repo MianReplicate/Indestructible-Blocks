@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mc.mian.indestructible_blocks.mixin",
+  "compatibilityLevel": "JAVA_${java_version}",
+  "mixins": [
+    "LevelChunkMixin",
+    "BlockMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
