@@ -9,6 +9,8 @@ base {
     archivesName = "${mod_id}"
 }
 
+group = project.mod_base_package
+
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
     withSourcesJar()
