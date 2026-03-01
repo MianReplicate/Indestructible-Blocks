@@ -35,7 +35,7 @@ publishMods {
 
         requires("common-network")
         if(project.name != "forge"){
-            requires("forge-config-api-port-fabric")
+            requires("forge-config-api-port")
         }
     }
 
