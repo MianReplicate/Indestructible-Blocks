@@ -6,7 +6,7 @@ plugins {
 version = "${project.name}-${mod_version}-${minecraft_version}"
 
 base {
-    archivesName = "${mod_id}"
+    archivesName = archives_base_name
 }
 
 group = project.mod_base_package
@@ -138,7 +138,7 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             groupId = mod_base_package
-            artifactId = mod_id
+            artifactId = archives_base_name
             version = project.version
             from components.java
         }
