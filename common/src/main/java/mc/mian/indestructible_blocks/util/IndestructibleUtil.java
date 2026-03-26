@@ -19,7 +19,7 @@ public class IndestructibleUtil {
     }
 
     public static boolean isInConfig(BlockState state){
-        return isInConfig(state.getBlockHolder().getRegisteredName());
+        return isInConfig(state.typeHolder().getRegisteredName());
     }
 
     public static boolean isInConfig(String blockId){
@@ -32,7 +32,7 @@ public class IndestructibleUtil {
             if(player.isCreative()){
                 IndestructibleUtil.addToPendingRemoval(state);
             } else if(!player.isCreative()){
-                player.displayClientMessage(Component.translatable("gui.indestructible_blocks.cannot_break"), true);
+                player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.cannot_break"));
                 return false;
             }
         }

@@ -7,13 +7,7 @@ plugins {
 apply from: '../publish.gradle'
 
 minecraft {
-    var parchment_version = ""
-    if(rootProject.hasProperty('parchment_minecraft_version')) {
-        parchment_version += parchment_minecraft_version + "-"
-    }
-    parchment_version += parchment_mappings_version + "-" + minecraft_version
-    println parchment_version
-    mappings channel: "parchment", version: parchment_version
+    mappings channel: "official", version: minecraft_version
 
     accessTransformer = true
 

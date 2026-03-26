@@ -6,11 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mc.mian.indestructible_blocks.api.OverrideState;
 import mc.mian.indestructible_blocks.util.DestructibilityState;
 import mc.mian.indestructible_blocks.util.IndestructibleResources;
+import mc.mian.indestructible_blocks.util.IndestructibleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 import java.util.HashMap;
 
@@ -55,7 +56,7 @@ public class IndestructibleSavedData extends SavedData implements OverrideState 
             // Best to preface the identifier with your mod id followed by an underscore
             // Slashes will throw an error as the folders are not present
             // Will resolve to `saves/<world_name>/data/examplemod_example.dat`
-            IndestructibleResources.MOD_ID + "_block_data",
+            IndestructibleResources.modLoc(IndestructibleResources.MOD_ID + "_block_data"),
             // Constructor for the new instance
             IndestructibleSavedData::new,
             // Codec factory to encode and decode the data
@@ -102,7 +103,7 @@ public class IndestructibleSavedData extends SavedData implements OverrideState 
         return this.state_overrides;
     }
 
-    public static IndestructibleSavedData getOrCreate(DimensionDataStorage dataStorage){
+    public static IndestructibleSavedData getOrCreate(SavedDataStorage dataStorage){
         return dataStorage.computeIfAbsent(TYPE);
     }
 }

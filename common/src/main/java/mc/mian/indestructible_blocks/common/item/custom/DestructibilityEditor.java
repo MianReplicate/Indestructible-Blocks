@@ -36,18 +36,18 @@ public class DestructibilityEditor extends Item {
 
                 DestructibilitySetting setting = context.getItemInHand().get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get());
                 if(setting == DestructibilitySetting.BLOCK_ID){
-                    DestructibilityState state = IndestructibleUtil.setIndestructibilityState(blockState.getBlockHolder().getRegisteredName(), !IndestructibleUtil.isInConfig(blockState));
+                    DestructibilityState state = IndestructibleUtil.setIndestructibilityState(blockState.typeHolder().getRegisteredName(), !IndestructibleUtil.isInConfig(blockState));
                     if(state != null){
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.indestructibility_state", blockState.getBlockHolder().getRegisteredName(), state.toString()), true);
+                        player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.indestructibility_state", blockState.typeHolder().getRegisteredName(), state.toString()));
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.getBlockHolder().getRegisteredName()), true);
+                        player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_state", blockState.typeHolder().getRegisteredName()));
                     }
                 } else if(setting == DestructibilitySetting.ONE_BLOCK){
                     DestructibilityState newState = IndestructibleUtil.changeOverride((ServerLevel) context.getLevel(), context.getClickedPos());
                     if(newState != null){
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getDisplay()), true);
+                        player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.block_indestructibility_state", newState.getDisplay()));
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_block_state", context.getClickedPos()), true);
+                        player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.failed_to_change_block_state", context.getClickedPos()));
                     }
                 }
             }
@@ -62,7 +62,7 @@ public class DestructibilityEditor extends Item {
             ItemStack item = player.getItemInHand(usedHand);
             DestructibilitySetting set = DestructibilitySetting.BLOCK_ID.getId() == item.get(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get()).getId() ? DestructibilitySetting.ONE_BLOCK : DestructibilitySetting.BLOCK_ID;
             item.set(IndestructibleComponents.DESTRUCTIBILITY_SETTING.get(), set);
-            player.displayClientMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getDisplay()), true);
+            player.sendOverlayMessage(Component.translatable("gui.indestructible_blocks.setting_state", set.getDisplay()));
             return InteractionResult.CONSUME.heldItemTransformedTo(item);
         }
         return InteractionResult.PASS;
