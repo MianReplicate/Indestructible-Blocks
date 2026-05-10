@@ -10,6 +10,9 @@ import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 public class IndestructibleEvents {
     @SubscribeEvent
     public static void playerDestroyEvent(final BlockEvent.BreakEvent event){
+        if(event.getLevel().isClientSide())
+            return;
+
         boolean successful = IndestructibleUtil.playerTryToBreak(event.getPlayer(), event.getState(), event.getPos());
         event.setResult(successful ? Result.ALLOW : Result.DENY);
     }

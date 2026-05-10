@@ -8,18 +8,19 @@ import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.lang.invoke.MethodHandles;
 
 @Mod(IndestructibleResources.MOD_ID)
 public class IndestructibleBlocksForge {
-    public static final BusGroup modEventBus = FMLJavaModLoadingContext.get().getModBusGroup();
+    public static BusGroup modEventBus;
     public static final BusGroup commonEventBus = BusGroup.DEFAULT;
 
-    public IndestructibleBlocksForge() {
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+    public IndestructibleBlocksForge(FMLJavaModLoadingContext context) {
+        modEventBus = context.getModBusGroup();
+        context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
         IndestructibleBlocks.config = ConfigHolder.SERVER;
         IndestructibleBlocks.init();
